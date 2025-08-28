@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitness prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <header class="header">
+      <h1>Fitness prediction</h1>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>Dataset preview</h2>
+        {% if records and columns %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                {% for col in columns %}
+                <th>{{ col }}</th>
+                {% endfor %}
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in records %}
+              <tr>
+                {% for col in columns %}
+                <td>{{ row[col] }}</td>
+                {% endfor %}
+                <td>
+                  {% if row.id is not none %}
+                  <button class="btn" onclick="predict('{{ row.id }}')">Predict</button>
+                  {% else %}
+                  <span>-</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p>No data found.</p>
+        {% endif %}
+      </section>
+    </main>
+
+    <script>
+      async function predict(id) {
+        try {
+          const res = await fetch(`/on_predict?id=${encodeURIComponent(id)}`);
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({ error: res.statusText }));
+            alert(`Prediction failed: ${err.error || 'Unknown error'}`);
+            return;
+          }
+          const data = await res.json();
+          // Navigate to result page 2 with same id; server renders layout
+          window.location.href = `/result?id=${encodeURIComponent(id)}`;
+          // If needed, you can inspect `data` here.
+          console.log('Prediction JSON:', data);
+        } catch (e) {
+          alert('Network error while predicting.');
+        }
+      }
+    </script>
+  </body>
+  </html>
+
+
