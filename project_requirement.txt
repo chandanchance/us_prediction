@@ -1,0 +1,28 @@
+I would like to build an UI with flask.
+test.csv: create a csv with multiple columns and some values related to sports. It should contain id and is_fit as the 2 columns, rest of the columns can be anything.
+
+It has 2 pages:
+
+Let the heading be: Fitness prediction
+
+page 1: load the test.csv as a table with predict button at the end. If user clicks on the predict button, flask end point (on_predict) should be called along with the id and load the page 2
+
+on_predict end point functionality:
+It should take the id as input and print the id
+It should return a json with the following
+output = 
+{
+block_ribbon: {id:1, retrived data from the csv for the id},
+block_middle_upper: {is_fit: 1, key_factors: "I think the prediction was fit bec...."},
+block_middle_lower: {This should contain the values of first 10 rows in the csv as a table},
+block_left:{},
+block_right: {narrative: "for the id 1, it is predicted as the person is fit"}
+}
+
+page 2: load the json that is returned from the on_predict and it should have the UI as follows:
+It should have 5 blocks. With upper horizontal ribbon bar containing the block_ribbon data.
+Left vertical rectangular block should be empty.
+middle blocks can be split into 2. middle_upper and middle_lower.
+middle_upper should display the data from blockmiddle_upper.
+middle_lower should display the data from block_middle_lower. This will contain a table.
+Right vertical rectangular block should should the block_right data.
