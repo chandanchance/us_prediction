@@ -1,0 +1,263 @@
+:root {
+  --bg: #0f172a;
+  --panel: #111827;
+  --muted: #94a3b8;
+  --text: #e5e7eb;
+  --accent: #60a5fa;
+  --accent-2: #34d399;
+  --danger: #ef4444;
+  --border: #1f2937;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
+  color: #cfdaf1;
+  background: #d6ecff;
+  min-height: 100vh;
+}
+
+.header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(214, 236, 255, 0.8);
+  position: sticky;
+  top: 0;
+  backdrop-filter: saturate(180%) blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: 0.4px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #cfe8ff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.btn {
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.08s ease, opacity 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.table-responsive {
+  overflow: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.table thead th {
+  text-align: left;
+  font-weight: 600;
+  color: #4b5563;
+  background: #eef6ff;
+  position: sticky;
+  top: 0;
+}
+
+.table th,
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e6f2ff;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr 320px;
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    "ribbon ribbon ribbon"
+    "left middle-upper right"
+    "left middle-lower right";
+  gap: 16px;
+  max-width: 1200px;
+  margin: 16px auto;
+  padding: 0 16px;
+}
+
+.ribbon {
+  grid-area: ribbon;
+  background: #ffffff;
+  border: 1px solid #cfe8ff;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.kv-table th:nth-child(1),
+.kv-table td:nth-child(1) {
+  width: 30%;
+}
+
+.kv-col-key {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.kv-col-value {
+  color: var(--text);
+}
+
+.ribbon .kv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px 10px;
+  margin-top: 12px;
+}
+
+.ribbon .kv-grid.tight {
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+.kv-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #cfe8ff;
+  color: #111827;
+  padding: 8px 10px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.kv-inline-key {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.kv-inline-value {
+  color: var(--text);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+}
+
+.tabs.vertical {
+  flex-direction: column;
+}
+
+.tab {
+  background: #ffffff;
+  border: 1px solid #cfe8ff;
+  color: #374151;
+  padding: 8px 12px;
+  border-radius: 8px;
+  user-select: none;
+}
+
+.tab-disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.tab-ghost {
+  background: #f7fbff;
+  border: 1px dashed #cfe8ff;
+  color: #374151;
+}
+
+.ribbon .pre-inline {
+  margin: 8px 0 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.left-rail {
+  grid-area: left;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+}
+
+.left-rail .card {
+  margin: 8px;
+  padding: 10px;
+}
+
+.left-rail .card h3 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+}
+
+.left-rail .card p {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.middle-upper {
+  grid-area: middle-upper;
+}
+
+.middle-lower {
+  grid-area: middle-lower;
+}
+
+.right-rail {
+  grid-area: right;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.badge-success {
+  background: rgba(52, 211, 153, 0.12);
+  color: #059669;
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0 40px 0;
+}
+
+
