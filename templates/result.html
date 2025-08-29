@@ -11,96 +11,211 @@
       <h1>Fitness prediction</h1>
     </header>
 
-    <main class="layout-grid">
+    <main class="layout-grid{% if output.block_nearest_neighbors and output.block_nearest_neighbors|length > 0 %} has-neighbors{% endif %}">
       <!-- Upper horizontal ribbon bar -->
-      <section class="ribbon">
-        <div>
-          <strong>ID:</strong> {{ output.block_ribbon.id }}
+      <section class="ribbon collapsible">
+        <div class="section-header" onclick="toggleSection('ribbon')">
+          <h3>Record Details</h3>
+          <span class="collapse-icon" id="ribbon-icon">▼</span>
         </div>
-        <div class="ribbon-details">
-          <div class="table-responsive">
-            <table class="table kv-table">
-              <thead>
-                <tr>
-                  {% for k in output.block_ribbon.retrieved.keys() %}
-                  <th>{{ k }}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {% for v in output.block_ribbon.retrieved.values() %}
-                  <td>{{ v }}</td>
-                  {% endfor %}
-                </tr>
-              </tbody>
-            </table>
+        <div class="section-content" id="ribbon-content">
+          <div>
+            <strong>ID:</strong> {{ output.block_ribbon.id }}
+          </div>
+          <div class="ribbon-details">
+            <div class="table-responsive">
+              <table class="table kv-table">
+                <thead>
+                  <tr>
+                    {% for k in output.block_ribbon.retrieved.keys() %}
+                    <th>{{ k }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    {% for v in output.block_ribbon.retrieved.values() %}
+                    <td>{{ v }}</td>
+                    {% endfor %}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- Left vertical block with two sub blocks -->
       <aside class="left-rail">
-        <section class="card">
-          <h3>Investigation</h3>
-          <p class="muted">AI generated investigation report.</p>
+        <section class="card collapsible">
+          <div class="section-header" onclick="toggleInvestigation()">
+            <h3>Investigation</h3>
+            <span class="collapse-icon" id="investigation-icon">▼</span>
+          </div>
+          <div class="section-content" id="investigation-content">
+            <p class="muted">AI generated investigation report.</p>
+          </div>
         </section>
-        <section class="card">
-          <h3>Comments</h3>
-          <p class="muted">Add comments here.</p>
+        <section class="card collapsible">
+          <div class="section-header" onclick="toggleSection('comments')">
+            <h3>Comments</h3>
+            <span class="collapse-icon" id="comments-icon">▼</span>
+          </div>
+          <div class="section-content" id="comments-content">
+            <p class="muted">Add comments here.</p>
+          </div>
         </section>
       </aside>
 
-      <!-- Middle Upper block -->
-      <section class="middle-upper card">
-        <h2>Prediction</h2>
-        <p>
-          <strong>Is fit:</strong>
-          <span class="badge {{ 'badge-success' if output.block_middle_upper.is_fit == 1 else 'badge-danger' }}">
-            {{ 'Yes' if output.block_middle_upper.is_fit == 1 else 'No' }}
-          </span>
-        </p>
-        <p>
-          <strong>Key factors:</strong>
-          {{ output.block_middle_upper.key_factors }}
-        </p>
-      </section>
-
-      <!-- Middle Lower block with table of first 10 rows -->
-      <section class="middle-lower card">
-        <h2>Top 10 rows</h2>
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                {% for col in output.block_middle_lower.columns %}
-                <th>{{ col }}</th>
-                {% endfor %}
-              </tr>
-            </thead>
-            <tbody>
-              {% for r in output.block_middle_lower.table_rows %}
-              <tr>
-                {% for col in output.block_middle_lower.columns %}
-                <td>{{ r[col] }}</td>
-                {% endfor %}
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+      <!-- Middle Upper block - Prediction -->
+      <section class="middle-upper card collapsible">
+        <div class="section-header" onclick="toggleSection('prediction')">
+          <h2>Prediction</h2>
+          <span class="collapse-icon" id="prediction-icon">▼</span>
+        </div>
+        <div class="section-content" id="prediction-content">
+          <p>
+            <strong>Is fit:</strong>
+            <span class="badge {{ 'badge-success' if output.block_middle_upper.is_fit == 1 else 'badge-danger' }}">
+              {{ 'Yes' if output.block_middle_upper.is_fit == 1 else 'No' }}
+            </span>
+          </p>
+          <p>
+            <strong>Key factors:</strong>
+            {{ output.block_middle_upper.key_factors }}
+          </p>
         </div>
       </section>
 
-      <!-- Right vertical block with narrative -->
-      <aside class="right-rail card">
-        <h2>Narrative</h2>
-        <p>{{ output.block_right.narrative }}</p>
-      </aside>
+      <!-- Middle Upper block - Nearest Neighbors (always present but conditionally visible) -->
+      <section class="middle-neighbors card collapsible" {% if not output.block_nearest_neighbors or output.block_nearest_neighbors|length == 0 %}style="display: none;"{% endif %}>
+        <div class="section-header" onclick="toggleSection('neighbors')">
+          <h2>Nearest Neighbors</h2>
+          <span class="collapse-icon" id="neighbors-icon">▼</span>
+        </div>
+        <div class="section-content" id="neighbors-content">
+          {% if output.block_nearest_neighbors and output.block_nearest_neighbors|length > 0 %}
+            {% for key, value in output.block_nearest_neighbors.items() %}
+            <p><strong>{{ key }}:</strong> {{ value }}</p>
+            {% endfor %}
+          {% else %}
+            <p class="muted">No nearest neighbors data available.</p>
+          {% endif %}
+        </div>
+      </section>
+
+      <!-- Middle Narrative block (moved from right) -->
+      <section class="middle-narrative card collapsible">
+        <div class="section-header" onclick="toggleSection('narrative')">
+          <h2>Narrative</h2>
+          <span class="collapse-icon" id="narrative-icon">▼</span>
+        </div>
+        <div class="section-content" id="narrative-content">
+          <p>{{ output.block_right.narrative }}</p>
+        </div>
+      </section>
+
+      <!-- Middle Lower block with table of first 10 rows -->
+      <section class="middle-lower card collapsible">
+        <div class="section-header" onclick="toggleSection('top10')">
+          <h2>Top 10 rows</h2>
+          <span class="collapse-icon" id="top10-icon">▼</span>
+        </div>
+        <div class="section-content" id="top10-content">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  {% for col in output.block_middle_lower.columns %}
+                  <th>{{ col }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for r in output.block_middle_lower.table_rows %}
+                <tr>
+                  {% for col in output.block_middle_lower.columns %}
+                  <td>{{ r[col] }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="footer">
       <a class="btn" href="/">Back to dataset</a>
     </footer>
+
+    <script>
+      function toggleSection(sectionId) {
+        const content = document.getElementById(sectionId + '-content');
+        const icon = document.getElementById(sectionId + '-icon');
+        
+        if (content.style.display === 'none') {
+          content.style.display = 'block';
+          icon.textContent = '▼';
+        } else {
+          content.style.display = 'none';
+          icon.textContent = '▶';
+        }
+      }
+
+      function toggleInvestigation() {
+        const investigationContent = document.getElementById('investigation-content');
+        const investigationIcon = document.getElementById('investigation-icon');
+        
+        // Toggle investigation section
+        const isInvestigationVisible = investigationContent.style.display !== 'none';
+        
+        if (isInvestigationVisible) {
+          // Hide investigation and all middle blocks
+          investigationContent.style.display = 'none';
+          investigationIcon.textContent = '▶';
+          
+          // Hide all middle blocks
+          document.getElementById('prediction-content').style.display = 'none';
+          document.getElementById('prediction-icon').textContent = '▶';
+          
+          // Hide neighbors block if it exists
+          const neighborsContent = document.getElementById('neighbors-content');
+          const neighborsIcon = document.getElementById('neighbors-icon');
+          if (neighborsContent) {
+            neighborsContent.style.display = 'none';
+            neighborsIcon.textContent = '▶';
+          }
+          
+          document.getElementById('narrative-content').style.display = 'none';
+          document.getElementById('narrative-icon').textContent = '▶';
+          document.getElementById('top10-content').style.display = 'none';
+          document.getElementById('top10-icon').textContent = '▶';
+        } else {
+          // Show investigation and all middle blocks
+          investigationContent.style.display = 'block';
+          investigationIcon.textContent = '▼';
+          
+          // Show all middle blocks
+          document.getElementById('prediction-content').style.display = 'block';
+          document.getElementById('prediction-icon').textContent = '▼';
+          
+          // Show neighbors block if it exists
+          const neighborsContent = document.getElementById('neighbors-content');
+          const neighborsIcon = document.getElementById('neighbors-icon');
+          if (neighborsContent) {
+            neighborsContent.style.display = 'block';
+            neighborsIcon.textContent = '▼';
+          }
+          
+          document.getElementById('narrative-content').style.display = 'block';
+          document.getElementById('narrative-icon').textContent = '▼';
+          document.getElementById('top10-content').style.display = 'block';
+          document.getElementById('top10-icon').textContent = '▼';
+        }
+      }
+    </script>
   </body>
   </html>
 
