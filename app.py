@@ -55,7 +55,7 @@ def build_prediction_output(record_id: int) -> Dict[str, Any]:
             "table_rows": json.loads(df.head(10).to_json(orient="records")),
             "columns": list(df.columns),
         },
-        "block_left": {},
+        "block_nearest_neighbors": {"Nearest neighbors": "Nearest neighbors"},
         "block_right": {
             "narrative": f"For the id {record_id}, it is predicted as the person is "
             + ("fit" if is_fit_value == 1 else "not fit"),
